@@ -1,14 +1,17 @@
 import { useSearchParams } from "@yamori-shared/react-utilities";
-import { NavigationBarLayout } from "@yamori-design/react-components";
-import { useEffect } from "react";
+import { Input, NavigationBarLayout } from "@yamori-design/react-components";
 
 export const App = () => {
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams<"text">();
 
-  useEffect(() => {
-    console.log(searchParams);
-  }, [searchParams]);
   return (
-    <NavigationBarLayout githubHref="https://github.com/jgaik/qr"></NavigationBarLayout>
+    <NavigationBarLayout githubHref="https://github.com/jgaik/qr">
+      <Input
+        value={searchParams["text"] || ""}
+        onChange={(event) =>
+          setSearchParams({ text: event.target.value }, { replace: true })
+        }
+      />
+    </NavigationBarLayout>
   );
 };
