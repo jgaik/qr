@@ -10,6 +10,10 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@yamori-design/react-components": "^2.13.0",
+    "@yamori-design/styles": "^2.9.0",
+    "@yamori-shared/react-utilities": "^1.8.0",
+    "qrcode": "^1.5.4",
     "react": "^19.1.1",
     "react-dom": "^19.1.1"
   },
