@@ -1,17 +1,11 @@
-import { useSearchParams } from "@yamori-shared/react-utilities";
-import { Input, NavigationBarLayout } from "@yamori-design/react-components";
+import { NavigationBarLayout } from "@yamori-design/react-components";
+import { QrCode, TextInput } from "./components";
 
 export const App = () => {
-  const [searchParams, setSearchParams] = useSearchParams<"text">();
-
   return (
     <NavigationBarLayout githubHref="https://github.com/jgaik/qr">
-      <Input
-        value={searchParams["text"] || ""}
-        onChange={(event) =>
-          setSearchParams({ text: event.target.value }, { replace: true })
-        }
-      />
+      <TextInput />
+      <QrCode />
     </NavigationBarLayout>
   );
 };
