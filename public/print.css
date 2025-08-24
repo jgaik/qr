@@ -1,7 +1,7 @@
 @media print {
   header,
   footer,
-  .app__content > *:not(svg) {
+  .app__content > *:not(.qr-code) {
     display: none !important;
   }
 }

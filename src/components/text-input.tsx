@@ -1,4 +1,5 @@
-import { Input } from "@yamori-design/react-components";
+import { CloseIcon } from "@yamori-design/icons";
+import { Button, Input } from "@yamori-design/react-components";
 import {
   getDebouncedFunction,
   useSearchParams,
@@ -21,10 +22,22 @@ export const TextInput: React.FC = () => {
 
   return (
     <Input
+      className="text-input"
       value={value}
       onChange={(event) => {
         setValue(event.currentTarget.value);
       }}
+      suffix={
+        value && (
+          <Button
+            variant="text"
+            aria-label="Clear"
+            onClick={() => setValue("")}
+          >
+            <CloseIcon />
+          </Button>
+        )
+      }
     />
   );
 };

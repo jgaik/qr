@@ -38,8 +38,8 @@ export const QrSvg: React.FC<QrSvgProps> = ({
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox={`0 0 ${svgInfo.size} ${svgInfo.size}`}
-      preserveAspectRatio="xMidYMin meet"
-      className="qr-code"
+      preserveAspectRatio="meet"
+      className="qr-svg"
     >
       <rect width="100%" height="100%" fill="white" />
       <path d={svgInfo.d} fill="black" />

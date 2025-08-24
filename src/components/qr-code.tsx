@@ -4,5 +4,9 @@ import { QrSvg } from "./qr-svg";
 export const QrCode: React.FC = () => {
   const [searchParams] = useSearchParams<"text">();
 
-  return <QrSvg text={searchParams.text} />;
+  return (
+    <div className="qr-code">
+      <QrSvg text={searchParams.text} />
+    </div>
+  );
 };
