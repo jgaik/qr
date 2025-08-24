@@ -1,16 +1,29 @@
 import { Input } from "@yamori-design/react-components";
-import { useSearchParams } from "@yamori-shared/react-utilities";
+import {
+  getDebouncedFunction,
+  useSearchParams,
+} from "@yamori-shared/react-utilities";
+import { useEffect, useMemo, useState } from "react";
 
 export const TextInput: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams<"text">();
+
+  const [value, setValue] = useState(searchParams.text ?? "");
+
+  const debouncedSet = useMemo(
+    () => getDebouncedFunction(setSearchParams, 500),
+    [setSearchParams]
+  );
+
+  useEffect(() => {
+    debouncedSet({ text: value }, { replace: true, dispatchEvent: true });
+  }, [debouncedSet, value]);
+
   return (
     <Input
-      value={searchParams["text"] ?? ""}
+      value={value}
       onChange={(event) => {
-        setSearchParams(
-          { text: event.target.value },
-          { replace: true, dispatchEvent: true }
-        );
+        setValue(event.currentTarget.value);
       }}
     />
   );

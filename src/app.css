@@ -1,0 +1,11 @@
+.app__content {
+  display: flex;
+  flex-direction: column;
+  padding: var(--yamori-spacing-large);
+  gap: var(--yamori-spacing-large);
+}
+
+.app__content .qr-code {
+  flex: 1;
+  min-height: 0;
+}
