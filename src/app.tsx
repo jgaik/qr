@@ -1,5 +1,5 @@
 import { NavigationBarLayout } from "@yamori-design/react-components";
-import { QrCode, TextInput } from "./components";
+import { Controls, QrCode, TextInput } from "./components";
 import "./app.css";
 
 export const App = () => {
@@ -10,6 +10,7 @@ export const App = () => {
     >
       <TextInput />
       <QrCode />
+      <Controls />
     </NavigationBarLayout>
   );
 };
