@@ -1,5 +1,13 @@
 import { create } from "qrcode";
-import { useMemo } from "react";
+import {
+  type ComponentRef,
+  useImperativeHandle,
+  useMemo,
+  useRef,
+  type Ref,
+  useEffect,
+  useState,
+} from "react";
 
 type QrSvgInfo = {
   d: string;
@@ -27,22 +35,58 @@ function getSvgInfo(text: string): QrSvgInfo {
 
 type QrSvgProps = {
   text?: string;
+  ref?: Ref<{
+    download: () => void;
+  }>;
 };
 
 export const QrSvg: React.FC<QrSvgProps> = ({
   text = "https://jgaik.github.io/qr",
+  ref,
 }) => {
+  const svgRef = useRef<ComponentRef<"svg">>(null);
+  const downloadLinkRef = useRef<ComponentRef<"a">>(null);
+
+  const [downloadLinkHref, setDownloadLinkHref] = useState<string>("");
+
   const svgInfo = useMemo(() => getSvgInfo(text), [text]);
 
+  useEffect(() => {
+    if (!svgRef.current) return;
+
+    const serializer = new XMLSerializer();
+    const svgString = serializer.serializeToString(svgRef.current);
+    const blob = new Blob([svgString], { type: "image/svg+xml" });
+    const url = URL.createObjectURL(blob);
+
+    setDownloadLinkHref(url);
+
+    return () => {
+      URL.revokeObjectURL(url);
+    };
+  }, [svgInfo]);
+
+  useImperativeHandle(ref, () => ({
+    download: () => downloadLinkRef.current?.click(),
+  }));
+
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox={`0 0 ${svgInfo.size} ${svgInfo.size}`}
-      preserveAspectRatio="meet"
-      className="qr-svg"
-    >
-      <rect width="100%" height="100%" fill="white" />
-      <path d={svgInfo.d} fill="black" />
-    </svg>
+    <>
+      <svg
+        ref={svgRef}
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox={`0 0 ${svgInfo.size} ${svgInfo.size}`}
+        className="qr-svg"
+      >
+        <rect width="100%" height="100%" fill="white" />
+        <path d={svgInfo.d} fill="black" />
+      </svg>
+      <a
+        href={downloadLinkHref}
+        hidden
+        ref={downloadLinkRef}
+        download="qr.svg"
+      />
+    </>
   );
 };

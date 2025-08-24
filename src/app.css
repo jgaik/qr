@@ -16,4 +16,11 @@
       max-height: 100%;
     }
   }
+
+  .controls {
+    display: flex;
+    gap: var(--yamori-spacing-large);
+    width: 100%;
+    justify-content: center;
+  }
 }

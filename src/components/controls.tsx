@@ -1,15 +1,23 @@
 import { Button } from "@yamori-design/react-components";
 
-export const Controls: React.FC = () => {
+type ControlsProps = {
+  onDownload: () => void;
+};
+
+export const Controls: React.FC<ControlsProps> = ({ onDownload }) => {
   return (
-    <Button
-      onClick={() =>
-        navigator.share({
-          url: window.location.href,
-        })
-      }
-    >
-      Share
-    </Button>
+    <div className="controls">
+      <Button
+        onClick={() =>
+          navigator.share({
+            url: window.location.href,
+          })
+        }
+      >
+        Share
+      </Button>
+      <Button onClick={() => window.print()}>Print</Button>
+      <Button onClick={onDownload}>Download</Button>
+    </div>
   );
 };
