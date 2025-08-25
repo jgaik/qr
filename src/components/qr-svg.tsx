@@ -40,16 +40,16 @@ type QrSvgProps = {
   }>;
 };
 
-export const QrSvg: React.FC<QrSvgProps> = ({
-  text = "https://jgaik.github.io/qr",
-  ref,
-}) => {
+export const QrSvg: React.FC<QrSvgProps> = ({ text, ref }) => {
   const svgRef = useRef<ComponentRef<"svg">>(null);
   const downloadLinkRef = useRef<ComponentRef<"a">>(null);
 
   const [downloadLinkHref, setDownloadLinkHref] = useState<string>("");
 
-  const svgInfo = useMemo(() => getSvgInfo(text), [text]);
+  const svgInfo = useMemo(
+    () => getSvgInfo(text || "https://jgaik.github.io/qr"),
+    [text]
+  );
 
   useEffect(() => {
     if (!svgRef.current) return;
