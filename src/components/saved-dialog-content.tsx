@@ -12,6 +12,7 @@ export const SavedDialogContent: React.FC = () => {
     <List>
       {savedTexts?.map((text, index) => (
         <List.Item
+          key={text}
           label={
             <>
               <Link
