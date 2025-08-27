@@ -4,10 +4,14 @@ import {
   NavigationBarLayout,
   useDialog,
 } from "@yamori-design/react-components";
-import { Controls, QrCode, SavedDialogContent, TextInput } from "./components";
+import {
+  Controls,
+  QrCode,
+  SavedQrsDialogContent,
+  TextInput,
+} from "./components";
 import { type ComponentRef, useRef } from "react";
-import { useLocalStorage } from "@yamori-shared/react-utilities";
-import { LocalStorageKeys } from "./constants";
+import { useSavedQrs } from "./utilities";
 import "./app.css";
 
 export const App = () => {
@@ -15,9 +19,9 @@ export const App = () => {
 
   const { showDialog } = useDialog();
 
-  const [savedTexts] = useLocalStorage<string[]>(LocalStorageKeys.Saved);
+  const [savedQrs] = useSavedQrs();
 
-  const isShowSavedEnabled = savedTexts && savedTexts.length > 0;
+  const isShowSavedEnabled = savedQrs && savedQrs.length > 0;
 
   return (
     <NavigationBarLayout
@@ -28,9 +32,10 @@ export const App = () => {
           <Button
             variant="text"
             onClick={() =>
-              showDialog(<SavedDialogContent />, {
+              showDialog(<SavedQrsDialogContent />, {
                 closeOnOutsideClick: true,
                 header: <Dialog.Header withClose />,
+                id: "saved-qrs-dialog",
               })
             }
           >
