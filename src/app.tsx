@@ -2,6 +2,8 @@ import {
   Button,
   Dialog,
   NavigationBarLayout,
+  Switch,
+  Tooltip,
   useDialog,
 } from "@yamori-design/react-components";
 import {
@@ -13,8 +15,10 @@ import {
 import { type ComponentRef, useRef } from "react";
 import { useSavedQrs } from "./utilities";
 import "./app.css";
+import { useSearchParams } from "@yamori-shared/react-utilities";
 
 export const App = () => {
+  const [searchParams, setSearchParams] = useSearchParams<"hide">();
   const qrCodeRef = useRef<ComponentRef<typeof QrCode> | null>(null);
 
   const { showDialog } = useDialog();
@@ -27,10 +31,11 @@ export const App = () => {
     <NavigationBarLayout
       githubHref="https://github.com/jgaik/qr"
       className="app"
-      controls={
+      controls={[
         isShowSavedEnabled && (
           <Button
-            variant="text"
+            key="saved-qrs"
+            variant="secondary"
             onClick={() =>
               showDialog(<SavedQrsDialogContent />, {
                 closeOnOutsideClick: true,
@@ -41,8 +46,22 @@ export const App = () => {
           >
             Saved QRs
           </Button>
-        )
-      }
+        ),
+        <Tooltip content="Hide input" key="hide-input">
+          <Switch
+            checked={searchParams.hide === "true"}
+            onChange={(e) => {
+              setSearchParams(
+                (prev) => ({
+                  ...prev,
+                  hide: e.currentTarget.checked ? "true" : null,
+                }),
+                { dispatchEvent: true }
+              );
+            }}
+          />
+        </Tooltip>,
+      ]}
     >
       <TextInput />
       <QrCode ref={qrCodeRef} />

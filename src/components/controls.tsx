@@ -57,11 +57,13 @@ export const Controls: React.FC<ControlsProps> = ({ onDownload }) => {
       <IconButton
         icon={<ShareIcon />}
         label="Share"
-        onClick={() =>
+        onClick={() => {
+          const params = new URLSearchParams(searchParams);
+          params.set("hide", "true");
           navigator.share({
-            url: window.location.href,
-          })
-        }
+            url: `${window.location.pathname}?${params}`,
+          });
+        }}
         collapsed={isCollapsed}
       />
       <IconButton

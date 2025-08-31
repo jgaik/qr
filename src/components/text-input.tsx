@@ -7,7 +7,7 @@ import {
 import { useEffect, useMemo, useState } from "react";
 
 export const TextInput: React.FC = () => {
-  const [searchParams, setSearchParams] = useSearchParams<"text">();
+  const [searchParams, setSearchParams] = useSearchParams<"text" | "hide">();
 
   const [value, setValue] = useState(searchParams.text ?? "");
 
@@ -17,27 +17,34 @@ export const TextInput: React.FC = () => {
   );
 
   useEffect(() => {
-    debouncedSet({ text: value }, { replace: true, dispatchEvent: true });
+    debouncedSet((prev) => ({ ...prev, text: value }), {
+      replace: true,
+      dispatchEvent: true,
+    });
   }, [debouncedSet, value]);
 
   return (
-    <Input
-      className="text-input"
-      value={value}
-      onChange={(event) => {
-        setValue(event.currentTarget.value);
-      }}
-      suffix={
-        value && (
-          <Button
-            variant="text"
-            aria-label="Clear"
-            onClick={() => setValue("")}
-          >
-            <CloseIcon />
-          </Button>
-        )
-      }
-    />
+    !searchParams.hide && (
+      <Input
+        aria-label="Text to encode"
+        className="text-input"
+        value={value}
+        onChange={(event) => {
+          setValue(event.currentTarget.value);
+        }}
+        suffix={
+          value && (
+            <Button
+              variant="text"
+              aria-label="Clear"
+              onClick={() => setValue("")}
+            >
+              <CloseIcon />
+            </Button>
+          )
+        }
+        placeholder="Enter text to encode"
+      />
+    )
   );
 };
