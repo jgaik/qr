@@ -6,7 +6,7 @@ import {
   useDialog,
   type TableColumn,
 } from "@yamori-design/react-components";
-import { type SavedQr, useSavedQrs } from "../utilities";
+import { type SavedQr, useSavedQrs } from "../../utilities";
 import { DeleteIcon } from "@yamori-design/icons";
 import { useCallback, useEffect, useMemo } from "react";
 import { assertNonNullable } from "@yamori-shared/react-utilities";

@@ -1,4 +1,5 @@
 export * from "./controls";
+export * from "./icon-button";
 export * from "./qr-code";
-export * from "./saved-qrs-dialog-content";
 export * from "./text-input";
+export * from "./nav-bar-controls";

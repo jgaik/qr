@@ -1,71 +1,38 @@
-import {
-  Button,
-  Dialog,
-  NavigationBarLayout,
-  Switch,
-  Tooltip,
-  useDialog,
-} from "@yamori-design/react-components";
-import {
-  Controls,
-  QrCode,
-  SavedQrsDialogContent,
-  TextInput,
-} from "./components";
-import { type ComponentRef, useRef } from "react";
-import { useSavedQrs } from "./utilities";
+import { NavigationBarLayout } from "@yamori-design/react-components";
+import { NavBarControls } from "./components";
+import { useState } from "react";
+import { CopyQrView, QrView } from "./views";
 import "./app.css";
-import { useSearchParams } from "@yamori-shared/react-utilities";
+
+const IS_BARCODE_DETECTOR_SUPPORTED =
+  "BarcodeDetector" in window &&
+  "mediaDevices" in navigator &&
+  typeof navigator.mediaDevices.getUserMedia === "function";
 
 export const App = () => {
-  const [searchParams, setSearchParams] = useSearchParams<"hide">();
-  const qrCodeRef = useRef<ComponentRef<typeof QrCode> | null>(null);
-
-  const { showDialog } = useDialog();
-
-  const [savedQrs] = useSavedQrs();
-
-  const isShowSavedEnabled = savedQrs && savedQrs.length > 0;
+  const [showQr, setShowQr] = useState(true);
 
   return (
     <NavigationBarLayout
       githubHref="https://github.com/jgaik/qr"
       className="app"
-      controls={[
-        isShowSavedEnabled && (
-          <Button
-            key="saved-qrs"
-            variant="secondary"
-            onClick={() =>
-              showDialog(<SavedQrsDialogContent />, {
-                closeOnOutsideClick: true,
-                header: <Dialog.Header withClose />,
-                id: "saved-qrs-dialog",
-              })
-            }
-          >
-            Saved QRs
-          </Button>
-        ),
-        <Tooltip content="Hide input" key="hide-input">
-          <Switch
-            checked={searchParams.hide === "true"}
-            onChange={(e) => {
-              setSearchParams(
-                (prev) => ({
-                  ...prev,
-                  hide: e.currentTarget.checked ? "true" : null,
-                }),
-                { dispatchEvent: true }
-              );
-            }}
-          />
-        </Tooltip>,
-      ]}
+      controls={showQr && <NavBarControls />}
+      links={
+        IS_BARCODE_DETECTOR_SUPPORTED
+          ? [
+              {
+                children: showQr ? "Copy QR" : "Create QR",
+                onClick: (e) => {
+                  e.preventDefault();
+                  setShowQr((prev) => !prev);
+                },
+                href: "#",
+              },
+            ]
+          : undefined
+      }
     >
-      <TextInput />
-      <QrCode ref={qrCodeRef} />
-      <Controls onDownload={() => qrCodeRef.current?.download()} />
+      {showQr ? <QrView /> : <CopyQrView />}
     </NavigationBarLayout>
   );
 };
