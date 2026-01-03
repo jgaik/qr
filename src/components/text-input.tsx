@@ -1,5 +1,5 @@
 import { CloseIcon } from "@yamori-design/icons";
-import { Button, Input } from "@yamori-design/react-components";
+import { Button, Textarea } from "@yamori-design/react-components";
 import {
   getDebouncedFunction,
   useSearchParams,
@@ -25,26 +25,27 @@ export const TextInput: React.FC = () => {
 
   return (
     !searchParams.hide && (
-      <Input
-        aria-label="Text to encode"
-        className="text-input"
-        value={value}
-        onChange={(event) => {
-          setValue(event.currentTarget.value);
-        }}
-        suffix={
-          value && (
-            <Button
-              variant="text"
-              aria-label="Clear"
-              onClick={() => setValue("")}
-            >
-              <CloseIcon />
-            </Button>
-          )
-        }
-        placeholder="Enter text to encode"
-      />
+      <div className="text-input">
+        <Textarea
+          aria-label="Text to encode"
+          value={value}
+          onChange={(event) => {
+            setValue(event.currentTarget.value);
+          }}
+          resizable
+          rows={1}
+          placeholder="Enter text to encode"
+        />
+        {value && (
+          <Button
+            variant="text"
+            aria-label="Clear"
+            onClick={() => setValue("")}
+          >
+            <CloseIcon />
+          </Button>
+        )}
+      </div>
     )
   );
 };

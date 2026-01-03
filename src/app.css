@@ -7,6 +7,21 @@
   }
 
   .qr-view {
+    .text-input {
+      display: flex;
+      align-items: flex-start;
+      gap: var(--yamori-spacing-medium);
+
+      textarea {
+        flex: 1;
+        field-sizing: content;
+      }
+
+      button {
+        margin-top: calc(1lh / 2);
+      }
+    }
+
     .qr-code {
       flex: 1;
       min-height: 0;

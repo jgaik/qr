@@ -1,5 +1,8 @@
 import { Button } from "@yamori-design/react-components";
-import { useMatchElementSize } from "@yamori-shared/react-utilities";
+import {
+  getNonNullable,
+  useMatchElementSize,
+} from "@yamori-shared/react-utilities";
 import {
   useRef,
   useState,
@@ -44,7 +47,11 @@ function mapVideoPointToCanvas(
   };
 }
 
-export const CopyQrView = () => {
+interface CopyQrViewProps {
+  onCopy: (text: string) => void;
+}
+
+export const CopyQrView: React.FC<CopyQrViewProps> = ({ onCopy }) => {
   const videoRef = useRef<ComponentRef<"video">>(null);
   const canvasRef = useRef<ComponentRef<"canvas">>(null);
 
@@ -141,7 +148,12 @@ export const CopyQrView = () => {
     <main className="copy-qr-view">
       <video ref={videoRef} autoPlay muted playsInline />
       <canvas ref={canvasRef} />
-      <Button disabled={!detectedValue} onClick={() => alert(detectedValue)}>
+      <Button
+        disabled={!detectedValue}
+        onClick={() =>
+          onCopy(getNonNullable(detectedValue, "detected value on click"))
+        }
+      >
         Copy highlighted QR
       </Button>
     </main>

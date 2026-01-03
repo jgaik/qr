@@ -1,4 +1,7 @@
-import { useSearchParams } from "@yamori-shared/react-utilities";
+import {
+  getNonNullable,
+  useSearchParams,
+} from "@yamori-shared/react-utilities";
 import { useSavedQrs } from "../utilities";
 import {
   DownloadIcon,
@@ -84,7 +87,10 @@ export const Controls: React.FC<ControlsProps> = ({ onDownload }) => {
         onClick={() =>
           setSavedQrs([
             ...(savedQrs ?? []),
-            { text: searchParams.text!, date: Date.now() },
+            {
+              text: getNonNullable(searchParams.text, "text when saving qr"),
+              date: Date.now(),
+            },
           ])
         }
         disabled={

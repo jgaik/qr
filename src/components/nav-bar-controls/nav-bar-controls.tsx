@@ -8,6 +8,7 @@ import {
 import { useSearchParams } from "@yamori-shared/react-utilities";
 import { useSavedQrs } from "../../utilities";
 import { SavedQrsDialogContent } from "./saved-qrs-dialog-content";
+import { SaveIcon } from "@yamori-design/icons";
 
 export const NavBarControls = () => {
   const [searchParams, setSearchParams] = useSearchParams<"hide">();
@@ -19,18 +20,20 @@ export const NavBarControls = () => {
   return (
     <>
       {isShowSavedEnabled && (
-        <Button
-          variant="secondary"
-          onClick={() =>
-            showDialog(<SavedQrsDialogContent />, {
-              closeOnOutsideClick: true,
-              header: <Dialog.Header withClose />,
-              id: "saved-qrs-dialog",
-            })
-          }
-        >
-          Saved QRs
-        </Button>
+        <Tooltip content="Saved QRs">
+          <Button
+            variant="icon"
+            onClick={() =>
+              showDialog(<SavedQrsDialogContent />, {
+                closeOnOutsideClick: true,
+                header: <Dialog.Header withClose />,
+                id: "saved-qrs-dialog",
+              })
+            }
+          >
+            <SaveIcon />
+          </Button>
+        </Tooltip>
       )}
       <Tooltip content="Hide input">
         <Switch

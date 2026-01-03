@@ -1,4 +1,5 @@
 import { NavigationBarLayout } from "@yamori-design/react-components";
+import { useSearchParams } from "@yamori-shared/react-utilities";
 import { NavBarControls } from "./components";
 import { useState } from "react";
 import { CopyQrView, QrView } from "./views";
@@ -10,6 +11,7 @@ const IS_BARCODE_DETECTOR_SUPPORTED =
   typeof navigator.mediaDevices.getUserMedia === "function";
 
 export const App = () => {
+  const [, setSearchParams] = useSearchParams<"text">();
   const [showQr, setShowQr] = useState(true);
 
   return (
@@ -32,7 +34,16 @@ export const App = () => {
           : undefined
       }
     >
-      {showQr ? <QrView /> : <CopyQrView />}
+      {showQr ? (
+        <QrView />
+      ) : (
+        <CopyQrView
+          onCopy={(text) => {
+            setSearchParams({ text });
+            setShowQr(true);
+          }}
+        />
+      )}
     </NavigationBarLayout>
   );
 };
